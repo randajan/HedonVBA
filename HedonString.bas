@@ -45,7 +45,7 @@ Public Function PartCompare(ByVal String1 As String, ByVal String2 As String, Op
 End Function
 
 Public Function SInStr(ByVal Text As String, Optional ByVal InText As String, Optional ByVal ExText As String) As Boolean
-    'Vrï¿½tï¿½ true pokud v textu ï¿½ï¿½st InText je a ExText nenï¿½
+    'Vrátí true pokud v textu èást InText je a ExText není
     SInStr = ((Len(InText) = 0) Or (InStr(1, Text, InText, vbTextCompare) > 0)) And ((Len(ExText) = 0) Or (InStr(1, Text, ExText, vbTextCompare) = 0))
 End Function
 
@@ -110,18 +110,25 @@ Public Function PartStr(ByVal Text As String, ByVal Lenght As Long) As String
     If Len(Text) > Lenght Then PartStr = Mid(Text, 1, Lenght) & "..." Else PartStr = Text
 End Function
 
+Public Function StrRepeat(ByVal Str As String, ByVal Repeat As Long) As String
+    Dim i As Long, r As String
+    For i = 1 To Repeat
+        StrRepeat = StrRepeat & Str
+    Next i
+End Function
+
 Public Function Inflect(ByVal Root As String, ByVal Num As Long, ByVal Ads As Long, Optional WithNum As Boolean = True) As String
-    'Skloï¿½uje podle ï¿½ï¿½slovky a vzoru dle ï¿½ï¿½sla Ads (nutno pï¿½edem definovat)
+    'Skloòuje podle èislovky a vzoru dle èísla Ads (nutno pøedem definovat)
     Static AdsTbl As Variant
     If IsBlank(AdsTbl) Then
-        'Vzory prvnï¿½ je Ads = 0
+        'Vzory první je Ads = 0
         'Vzor Minuta (0)
         Call VarAdd(AdsTbl, StrToList(";a;y;", ";"))
         'Vzor Mail (1)
-        Call VarAdd(AdsTbl, StrToList("ï¿½;;y;", ";"))
+        Call VarAdd(AdsTbl, StrToList("ù;;y;", ";"))
         'Vzor Den (2)
-        Call VarAdd(AdsTbl, StrToList("nï¿½;en;ny;", ";"))
-        'Vzor Obeslï¿½no (3)
+        Call VarAdd(AdsTbl, StrToList("ní;en;ny;", ";"))
+        'Vzor Obesláno (3)
         Call VarAdd(AdsTbl, StrToList("o;;y;", ";"))
     End If
     If WithNum Then Inflect = Num & " "
@@ -183,7 +190,7 @@ Public Function TextFunctionAscii(ByVal Text As String) As String
 End Function
 
 Public Function SConcatenate(ByVal Text1 As String, ByVal Text2 As String, Optional ByVal Delimiter As String, Optional ByVal Silly As Boolean = True)
-    'Spojï¿½ dva textovï¿½ ï¿½etï¿½zce a oddï¿½lï¿½ je Delimiterem
+    'Spojí dva textové øetìzce a oddìlí je Delimiterem
     Text1 = Trim(Text1)
     Text2 = Trim(Text2)
     If Len(Delimiter) = 0 Then Delimiter = ", "
@@ -221,7 +228,7 @@ Continue:
 End Function
 
 Public Function SReplace(ByVal Expression As String, ByVal Find As String, ByVal Replace As String, Optional Start As Long = 1, Optional count As Long = -1, Optional WholeWord As Boolean = False, Optional ByVal Compare As VbCompareMethod = vbBinaryCompare)
-    'K funkci Replace pï¿½idï¿½vï¿½ pï¿½epï¿½nï¿½ï¿½ "WholeWord", kterï¿½ vyhledï¿½vï¿½ jen absolutnï¿½ slova a ï¿½ï¿½sla
+    'K funkci Replace pøidává pøepínaè "WholeWord", které vyhledává jen absolutní slova a èísla
     Dim Final As Long
     
     If Len(Find) > 0 Then
@@ -257,7 +264,7 @@ Public Function SReplaceList(ByVal Text As String, ByVal tbl As Variant, ByVal S
 End Function
 
 Public Function ConTable(ByVal str As String, ByVal Table As Variant, Optional ByVal Default As String, Optional ByVal Row As Long = 2) As String
-    'Vrï¿½tï¿½ ï¿½ï¿½dek Row od nejpodobnï¿½jï¿½ï¿½ vstupnï¿½ hodnoty v seznamu hodnot Table, nebo defaultnï¿½ nastavenï¿½ Default
+    'Vrátí øádek Row od nejpodobnìjší vstupní hodnoty v seznamu hodnot Table, nebo defaultní nastavení Default
     Dim Col As Long, Cmpr As Double, TopNum As Double
     ConTable = Default
     Row = MathFrame(Row, 2)
@@ -358,8 +365,8 @@ Public Function StEn(Str1 As String) As String
 End Function
 
 Function ClearDiak(ByVal str As String) As String
-    'Nahradï¿½ znaky diakritiky
-    Const cz As String = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øšï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýžï¿½"
+    'Nahradí znaky diakritiky
+    Const cz As String = "áÁèÈïÏéÉìÌíÍòÒóÓøØšŠúÚùÙýÝžŽ"
     Const EN As String = "aAcCdDeEeEiInNoOrRsStTuUuUyYzZ"
     Dim i As Long
     If Len(str) = 0 Then Exit Function
@@ -484,7 +491,7 @@ End Function
 
 
 Public Function TimeMod(ByVal Time As Double, Optional ByVal mSec As Long = 3600, Optional ByVal mMin As Long = 360, Optional ByVal mHour As Long = 24, Optional ByVal mDay As Long = -1, Optional ByVal mWeek As Long = 0) As String
-    'Pï¿½evede excelovï¿½ ï¿½ï¿½slo oznaï¿½ujï¿½cï¿½ ï¿½as do ï¿½itelnï¿½ textovï¿½ podoby
+    'Pøevede excelové èíslo oznaèující èas do èitelné textové podoby
     Dim Sec As Long, Min As Long, Hour As Long, Day As Long, Week As Long
     
     If Time > 0 Then Time = Int(Time * 24 * 60 * 60) Else Exit Function
@@ -506,11 +513,11 @@ Public Function TimeMod(ByVal Time As Double, Optional ByVal mSec As Long = 3600
     If Time > 0 Then Week = Int(Time - Day) / 7
     
     
-    If Week > 0 Then TimeMod = SConcatenate(TimeMod, Inflect("tï¿½d", Week, 2), ", ")
+    If Week > 0 Then TimeMod = SConcatenate(TimeMod, Inflect("týd", Week, 2), ", ")
     If Day > 0 Then TimeMod = SConcatenate(TimeMod, Inflect("d", Day, 2), ", ")
     If Hour > 0 Then TimeMod = SConcatenate(TimeMod, Inflect("hodin", Hour, 0), ", ")
     If Min > 0 Then TimeMod = SConcatenate(TimeMod, Inflect("minut", Min, 0), ", ")
-    If Sec > 0 Then TimeMod = SConcatenate(TimeMod, Inflect("vteï¿½in", Sec, 0), ", ")
+    If Sec > 0 Then TimeMod = SConcatenate(TimeMod, Inflect("vteøin", Sec, 0), ", ")
 
 End Function
 

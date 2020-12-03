@@ -11,8 +11,8 @@ Public Function Waitfor(ByRef IE As Object, Optional ByVal Wait As Long = 300, O
     Do
         For i = 1 To Wait
             If ((Not IE.Busy) And (IE.readyState = 4)) Then
-                If IE.Document.Title = "Chyba certifikï¿½tu: Navigace je blokovï¿½na." Then
-                    Doc = ParseDoc(IE.Document, "A", "Pokraï¿½ovat na tento web (nedoporuï¿½ujeme)")
+                If IE.Document.Title = "Chyba certifikátu: Navigace je blokována." Then
+                    Doc = ParseDoc(IE.Document, "A", "Pokraèovat na tento web (nedoporuèujeme)")
                     If Not IsBlank(Doc) Then Doc(vL(Doc)).Click
                 Else
                     Waitfor = "OK"
@@ -30,15 +30,13 @@ Public Function Waitfor(ByRef IE As Object, Optional ByVal Wait As Long = 300, O
             End If
             Sleep 100
         Next i
-        Waitfor = MsgLog(Msg:="Prohlï¿½eï¿½ je pï¿½ï¿½liï¿½ dlouho bez odezvy!", Typ:=vbExclamation + vbAbortRetryIgnore, Title:="Pï¿½ï¿½liï¿½ dlouho bez odezvy", Priority:="Major")
-        If Waitfor = "Znovu" Then IE.Refresh
-    Loop Until Waitfor <> "Znovu"
+    Loop Until (6 = MsgBox("Selhala komunikace s prohlížeèem" & DD & "Zkusit znovu?", vbExclamation + vbYesNo, "Pøíliš dlouho bez odezvy"))
     
 End Function
 
 Public Function SetIE(Optional ByVal URL As String, Optional ByRef IE As Object = Nothing, Optional ByVal Visible As Boolean = False, Optional ByVal Wait As Boolean = True, Optional ByVal Clear As Boolean = True, Optional ByVal Height As Long, Optional ByVal Width As Long, Optional ByVal Resizable As Boolean = True) As String
     Dim Default As Boolean, dURL As String
-    SetIE = "Zpï¿½t"
+    SetIE = "Zpìt"
     On Error GoTo Reset
     If IE Is Nothing Then
 Reset:
@@ -65,8 +63,8 @@ Reset:
 End Function
 
 Public Function ParseDoc(ByVal Document As Object, ByVal ParseTag As String, Optional ByVal InDoc As String, Optional ByVal FeedBack As Integer = 0, Optional ByVal count As Long = 0) As Variant
-    'Parsuje html dokument (Document), podle znaï¿½ky (ParseTag), podle kritï¿½ria (InDoc), a maximï¿½lnï¿½ho poï¿½tu (count)
-    'Feedback urï¿½uje co se vracï¿½ 1 = text, 2 = celï¿½ html, ostatnï¿½ - celï¿½ object
+    'Parsuje html dokument (Document), podle znaèky (ParseTag), podle kritéria (InDoc), a maximálního poètu (count)
+    'Feedback urèuje co se vrací 1 = text, 2 = celé html, ostatní - celý object
     Dim VarInx As Variant, i As Long, Doc As Long, Inx As Object
     
     If Not Document Is Nothing Then
@@ -90,9 +88,9 @@ Public Function ParseDoc(ByVal Document As Object, ByVal ParseTag As String, Opt
 End Function
 
 Public Function ParseTable(ByVal Document As Object, Optional ByVal FeedBack As Integer = 0, Optional ByVal TagBody As String = "tbody", Optional ByVal tagRow As String = "tr", Optional ByVal TagColumn As String = "td", Optional ByVal InBody As String, Optional ByVal InRow As String, Optional ByVal InColumn As String)
-    'Parsuje html dokument (Document) podle tï¿½ï¿½ vnoï¿½enï¿½ch znaï¿½ek a tï¿½i vnoï¿½enï¿½ch kritï¿½riï¿½ do podoby souï¿½adnicovï¿½ tabulky.
-    'Vracï¿½ vnoï¿½enï¿½ seznam kde prvnï¿½ ï¿½ï¿½slo oznaï¿½uje poï¿½adï¿½ tabulky, druhï¿½ poï¿½adï¿½ ï¿½ï¿½dku a tï¿½etï¿½ poï¿½adï¿½ sloupce
-    'Feedback urï¿½uje co se vracï¿½ 1 = text, 2 = celï¿½ html, ostatnï¿½ - celï¿½ object
+    'Parsuje html dokument (Document) podle vnoøených znaèek a vnoøenych kritérií do podoby souøadnicové tabulky.
+    'Vrací vnoøený seznam kde první èíslo oznaèuje poøadí tabulky, druhé poøadí øádku a tøetí poøadí sloupce
+    'Feedback urèuje co se vrací 1 = text, 2 = celé html, ostatní - celý object
 
     Dim VarInx As Variant, tV As Variant, rV As Variant
     
@@ -118,8 +116,8 @@ Public Function SClick(ByVal Element As Object, Optional ByVal Events As Boolean
 End Function
 
 Public Function SetWebForm(ByRef IE As Object, Optional ByVal InTag As String = "", Optional ByVal Handle As String = "", Optional ByVal Tag As String = "input", Optional ByVal Document As Object, Optional ByVal Events As Boolean = Empty, Optional ByVal Wait As Long = 50) As String
-    'Vyplï¿½uje webovï¿½ formulï¿½ï¿½ "Document", kde vyplnï¿½ pole oznaï¿½enï¿½ Tagem a upï¿½esnï¿½nï¿½ "InTag" ï¿½etï¿½zcem.
-    'Pokud je Handle prï¿½zdnï¿½ pak pouze klikï¿½, Wait slouï¿½ï¿½ jako prodleva pï¿½ed dalï¿½ï¿½m pokusem
+    'Vyplòuje webový formuláø "Document", kde vyplní pole oznaèený Tagem a upøesnìný "InTag" øetìzcem.
+    'Pokud je Handle prázdný pak pouze kliká, Wait slouží jako prodleva pøed dalším pokusem
     Dim List As Variant, i As Long
     
     Do
@@ -145,13 +143,12 @@ Public Function SetWebForm(ByRef IE As Object, Optional ByVal InTag As String = 
             Sleep (200)
         Next i
 Out:
-        SetWebForm = MsgLog(Msg:="Selhala komunikace s prohlï¿½eï¿½em", Typ:=vbExclamation + vbAbortRetryIgnore, Title:="Pï¿½ï¿½liï¿½ dlouho bez odezvy", Priority:="Major")
-    Loop Until SetWebForm <> "Znovu"
+    Loop Until (6 = MsgBox("Selhala komunikace s prohlížeèem" & DD & "Zkusit znovu?", vbExclamation + vbYesNo, "Pøíliš dlouho bez odezvy"))
 End Function
 
 
 Public Sub IEQuit(ByRef IE As Object, Optional ByVal CloseMethod As Boolean = True)
-    'Vypne bezpeï¿½nï¿½ IE, nebo jej zviditelnï¿½
+    'Vypne bezpeènì IE, nebo jej zviditelní
     If Not IE Is Nothing Then
         If CloseMethod Then
             On Error GoTo skip

@@ -25,9 +25,9 @@ Public Sub school()
         If (scl.Cells(dRow, 6).Value = "") Then
             tbl = ParseDoc(IE.Document, "table", "id=" & Pack("udaje"), 0, 1)
             If VarsNotEmpty(tbl) Then
-                scl.Cells(dRow, 8).Value = ListToStr(ParseDoc(tbl(0), "tr", "Telefonnï¿½ ï¿½ï¿½slo:", 2, 1))
-                scl.Cells(dRow, 6).Value = ListToStr(ParseDoc(tbl(0), "tr", "Internetovï¿½ adresa:", 2, 1))
-                scl.Cells(dRow, 7).Value = ListToStr(ParseDoc(tbl(0), "tr", "Emailovï¿½ adresa:", 2, 1))
+                scl.Cells(dRow, 8).Value = ListToStr(ParseDoc(tbl(0), "tr", "Telefonní èíslo:", 2, 1))
+                scl.Cells(dRow, 6).Value = ListToStr(ParseDoc(tbl(0), "tr", "Internetová adresa:", 2, 1))
+                scl.Cells(dRow, 7).Value = ListToStr(ParseDoc(tbl(0), "tr", "Emailová adresa:", 2, 1))
             End If
 
         End If

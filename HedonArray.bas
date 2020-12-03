@@ -26,7 +26,7 @@ Public Function CubesNotEmpty(ByVal Cube As Variant, Optional ByVal Bound1 As Lo
 End Function
 
 Public Function VeVar(ByVal Num As Long, ByVal Ads As Variant, Optional Rescue As Long = -1, Optional Default As String) As String
-    'Vracï¿½ hodnotu z pole, pokud nenajde posï¿½ se nastavit rescue (-2 prvnï¿½ hodnota, -3 poslednï¿½ hodnota) jinak nastavï¿½ default
+    'Vrací hodnotu z pole, pokud nenajde poskusí se nastavit rescue (-2 první hodnota, -3 poslední hodnota) jinak nastaví default
     VeVar = Default
     If Rescue = -2 Then Rescue = vL(Ads)
     If Rescue = -3 Then Rescue = vU(Ads)
@@ -38,8 +38,8 @@ Public Function VeVar(ByVal Num As Long, ByVal Ads As Variant, Optional Rescue A
 End Function
 
 Public Function StrToList(ByVal Text As String, Optional ByVal Delimiter As String, Optional STrims As Boolean = True) As Variant
-    'Pï¿½evede List na Text, jako oddï¿½lovaï¿½ pouï¿½ï¿½vï¿½ StrDelimiter, defaultnï¿½ enter
-    'Je moï¿½nï¿½ pouï¿½ï¿½vat na vstupu delimiteru funkci Ascii(#)
+    'Pøevede List na Text, jako oddìlovaè používá StrDelimiter, defaultnì enter
+    'Je možné používat na vstupu delimiteru funkci Ascii(#)
     Dim vList As Variant, Znak As Long
     Dim zac As Long, kon As Long
     zac = 1
@@ -60,8 +60,8 @@ Public Function StrToList(ByVal Text As String, Optional ByVal Delimiter As Stri
 End Function
 
 Public Function ListToStr(ByVal List As Variant, Optional ByVal Delimiter As String) As String
-    'Pï¿½evede List na Text, jako oddï¿½lovaï¿½ pouï¿½ï¿½vï¿½ StrDelimiter, defaultnï¿½ enter
-    'Je moï¿½nï¿½ pouï¿½ï¿½vat na vstupu delimiteru funkci Ascii(#)
+    'Pøevede List na Text, jako oddìlovaè používá StrDelimiter, defaultnì enter
+    'Je možné používat na vstupu delimiteru funkci Ascii(#)
     Dim Inx As Long
     
     If IsBlank(List) Then Exit Function
@@ -137,7 +137,7 @@ Public Sub ReadCube(Cube As Variant)
 End Sub
 
 Public Function VarConcatenate(ByVal FirstTable As Variant, ByVal SecondTable As Variant) As Variant
-    'Spojï¿½ dva listy do jednoho
+    'Spojí dva listy do jednoho
     If Not IsBlank(SecondTable) Then
         For Each Inx In SecondTable
             Call VarSet(FirstTable, Inx)
@@ -147,7 +147,7 @@ Public Function VarConcatenate(ByVal FirstTable As Variant, ByVal SecondTable As
 End Function
 
 Public Function VarMake(Optional ByVal Arg0 = Empty, Optional ByVal Arg1 = Empty, Optional ByVal Arg2 = Empty, Optional ByVal Arg3 = Empty, Optional ByVal Arg4 = Empty, Optional ByVal Arg5 = Empty, Optional ByVal Arg6 = Empty, Optional ByVal Arg7 = Empty, Optional ByVal Arg8 = Empty, Optional ByVal Arg9 = Empty, Optional ByVal Arg10 = Empty) As Variant
-    'Seï¿½adï¿½ argumenty do variant
+    'Seøadí argumenty do variant
     Dim nTbl As Variant
     If Not IsBlank(Arg0) Then Call VarSet(nTbl, Arg0, 0)
     If Not IsBlank(Arg1) Then Call VarSet(nTbl, Arg1, 1)
@@ -171,7 +171,7 @@ Public Function VarGet(ByRef Var As Variant, Optional ByVal Num As Long = -1) As
 End Function
 
 Public Function VarSet(ByRef Var As Variant, ByVal Add, Optional ByVal AsNum As Long = -1) As Variant
-    'Nahrazuje poloï¿½ku seznamu na konec nebo na AsNum
+    'Nahrazuje položku seznamu na konec nebo na AsNum
     Call VaRedim(Var, AsNum)
 
     If IsObject(Add) Then Set Var(AsNum) = Add Else Var(AsNum) = Add
@@ -179,7 +179,7 @@ Public Function VarSet(ByRef Var As Variant, ByVal Add, Optional ByVal AsNum As 
 End Function
 
 Public Function VarAdd(ByRef Var As Variant, ByVal Add, Optional ByVal AsNum As Long = -1) As Variant
-    'Vklï¿½dï¿½ poloï¿½ku do seznamu na pozici AsNum a posouvï¿½ ostatnï¿½ poloï¿½ky dï¿½l
+    'Vkládá položku do seznamu na pozici AsNum a posouvá ostatní položky dal
     Dim i As Long
     
     If AsNum > -1 And AsNum <= vU(Var) Then
@@ -191,8 +191,8 @@ Public Function VarAdd(ByRef Var As Variant, ByVal Add, Optional ByVal AsNum As 
     VarAdd = VarSet(Var, Add, AsNum)
 End Function
 Public Function VarPlace(ByRef Var As Variant, ByVal Add, Optional ByVal AsNum As Long = -1)
-    'Zapisuje do seznamu, ale pokud na mï¿½stï¿½ jiï¿½ existuje hodnota nenahrazuje ani nepï¿½idï¿½vï¿½
-    'V defaultnï¿½m nastavenï¿½ pï¿½idï¿½ hodnotu jen pokud v seznamu danï¿½ hodnota jeï¿½tï¿½ nenï¿½
+    'Zapisuje do seznamu, ale pokud na místì již existuje hodnota nenahrazuje ani nepøidává
+    'V defaultním nastavení pøidá hodnotu jen pokud v seznamu daná hodnota ještì není
     Dim i
     
     If Not IsBlank(Var) Then
@@ -210,7 +210,7 @@ Public Function VarPlace(ByRef Var As Variant, ByVal Add, Optional ByVal AsNum A
 End Function
 
 Public Function VaRedim(ByRef Var As Variant, Optional ByRef AsNum As Long = -1)
-    'Zvï¿½tï¿½i pole o 1 nebo na AsNum
+    'Zvìtši pole o 1 nebo na AsNum
     If IsBlank(Var) Then
         If AsNum < 0 Then AsNum = 0
         ReDim Var(0 To AsNum)
@@ -223,12 +223,12 @@ Public Function VaRedim(ByRef Var As Variant, Optional ByRef AsNum As Long = -1)
 End Function
 
 Public Function VarCount(ByRef Var As Variant) As Long
-    'Seï¿½te poï¿½et zï¿½znamï¿½ v poli Var
+    'Seète poèet záznamù v poli Var
     If Not IsBlank(Var) Then VarCount = vU(Var) - vL(Var) + 1
 End Function
 
 Public Function VarDel(ByRef Var As Variant, Optional AsNum As Long = -1)
-    'Vymaï¿½e ï¿½ï¿½st AsNum pole Var
+    'Vymaže èást AsNum pole Var
     Dim i As Long
     If ((Not IsBlank(Var)) And (AsNum >= 0)) Then
         If ((vL(Var) = AsNum) And (vU(Var) = AsNum)) Then
@@ -246,8 +246,8 @@ Public Function VarDel(ByRef Var As Variant, Optional AsNum As Long = -1)
 End Function
 
 Public Function VarFind(ByRef Var As Variant, Find, Optional ByVal Direction As Boolean = True) As Long
-    'Prohledï¿½ pole a vrï¿½tï¿½ prvnï¿½ shodu s Find
-    'Direction, True = hledï¿½ zespodu, False hledï¿½ shora
+    'Prohledá pole a vrátí první shodu s Find
+    'Direction, True = hledá zespodu, False hledá shora
     Dim i As Long, v1 As Long, v2 As Long, vS As Long
     VarFind = -1
     If Not IsBlank(Var) Then
@@ -296,7 +296,7 @@ Public Function FtrTable(ByVal Table As Variant, Optional ByVal WantRow As Varia
     
     If Not TablesNotEmpty(Table) Then Exit Function
     
-    'Chybï¿½ filtrovï¿½nï¿½ ï¿½etï¿½zce v sloupci InCol & ExCol
+    'Chybí filtrování øetìzce v sloupci InCol & ExCol
     If IsBlank(WantCol) Then
         For Col = vL(Table(vL(Table))) To vU(Table(vL(Table)))
             Call VarSet(WantCol, Col)
@@ -332,7 +332,7 @@ Public Function vU(ByVal Var As Variant) As Long
 End Function
 
 Public Function CutTable(ByVal Table As Variant) As Variant
-    'Oï¿½ï¿½zne Table na tabulku od ï¿½ï¿½dku 0 a sloupce 0
+    'Oøízne Table na tabulku od øádku 0 a sloupce 0
     Dim Row As Long, Col As Long, MinL As Long, MaxL As Long, MinU As Long, MaxU As Long
     Dim nCol As Long, nRow As Variant
     
@@ -369,7 +369,7 @@ Public Function CutTable(ByVal Table As Variant) As Variant
 End Function
 
 Public Function CutVar(ByVal Var As Variant) As Variant
-    'Oï¿½ï¿½zne Var na Pole od 0
+    'Oøízne Var na Pole od 0
     Dim outVar As Variant, i As Long
     If Not IsBlank(Var) Then
         If vL(Var) > 0 Then
@@ -386,8 +386,8 @@ End Function
 
 
 Public Function CompressTable(ByRef Table As Variant, Optional ByVal DomCol As Long, Optional ByVal Delimiter As String) As Variant
-    'Vyï¿½istï¿½ dvojitï¿½ pole (Table) od prï¿½zdnï¿½ch polï¿½ a duplicit podle dominantnï¿½ho sloupce (DomCol) defaultnï¿½ podle prvnï¿½ho.
-    'Delimiter nastavuje oddï¿½lenï¿½ textu mezi spojenï¿½mi ï¿½ï¿½dky
+    'Vyèistí dvojité pole (Table) od prázdných polí a duplicit podle dominantního sloupce (DomCol) defaultnì podle prvního.
+    'Delimiter nastavuje oddìlení textu mezi spojenými øádky
     Dim vrtRow As Variant, lntCol As Long, vroTab As Variant, lnoRow As Variant, lnoCol As Long, News As Boolean
     
     If Len(Delimiter) = 0 Then Delimiter = ", "

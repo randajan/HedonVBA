@@ -1,4 +1,4 @@
-Attribute VB_Name = "HedonImage"
+Attribute VB_Name = "HeadonImage"
 
 'Require:
     'Hedon.bas
@@ -36,20 +36,39 @@ End Function
 
 Public Sub ClearImages(ByRef Target As Range)
     
-    Dim Sheet
+    Dim Sheet As Worksheet
     Dim xPicRg As Range
-    Dim xPic As Picture
-    Dim xRg As Range
+    Dim xPic
     
     Set Sheet = Target.Worksheet
     
     Application.ScreenUpdating = False
+    
     For Each xPic In Sheet.Pictures
         Set xPicRg = Sheet.Range(xPic.TopLeftCell.Address & ":" & xPic.BottomRightCell.Address)
         If Not Intersect(Target, xPicRg) Is Nothing Then xPic.Delete
-    Next
+    Next xPic
+    
     Application.ScreenUpdating = True
+    
+End Sub
 
+Public Sub ClearShapes(ByRef Target As Range)
+    
+    Dim Sheet As Worksheet
+    Dim xPicRg As Range
+    Dim xPic
+    
+    Set Sheet = Target.Worksheet
+    
+    Application.ScreenUpdating = False
+    
+    For Each xPic In Sheet.Shapes
+        Set xPicRg = Sheet.Range(xPic.TopLeftCell.Address & ":" & xPic.BottomRightCell.Address)
+        If Not Intersect(Target, xPicRg) Is Nothing Then xPic.Delete
+    Next xPic
+    
+    Application.ScreenUpdating = True
     
 End Sub
 
@@ -84,7 +103,7 @@ Public Sub SaveImages(ByRef Sheet As Worksheet, ByVal Path As String)
 
 End Sub
 
-Public Function GridImages(ByRef Imgs As Variant, ByVal Height As Double, ByVal Width As Double, Optional Top As Double = 0, Optional Left As Double = 0, Optional ByVal Margin As Double = 2)
+Public Function GridImages(ByRef imgs As Variant, ByVal Height As Double, ByVal Width As Double, Optional Top As Double = 0, Optional Left As Double = 0, Optional ByVal VerticalMargin As Double = 2, Optional ByVal HorizontalMargin As Double = 2)
     Dim Img As Object
     
     Dim vImgs As Variant, vRows As Variant, vRowsWidth As Variant
@@ -93,23 +112,23 @@ Public Function GridImages(ByRef Imgs As Variant, ByVal Height As Double, ByVal 
     Dim cHeight As Double, cWidth As Double
     Dim cRow As Long, cRows As Long, cImg As Long, i As Long
 
-    If Not VarsNotEmpty(Imgs) Then Exit Function
+    If Not VarsNotEmpty(imgs) Then Exit Function
     
     'Sort Images and count widths
     cWidth = 0
-    For cImg = vL(Imgs) To vU(Imgs)
-        Set Img = Imgs(cImg)
-        Img.Height = Height
-        cWidth = cWidth + Img.Width
-        
+    For cImg = vL(imgs) To vU(imgs)
+        Set Img = imgs(cImg)
+        Img.Height = Height - 2 * VerticalMargin
         'Sort Images by width
         i = -1
         If VarsNotEmpty(vImgs) Then
             For i = vL(vImgs) To vU(vImgs)
                 If i >= 0 And vImgs(i).Width < Img.Width Then Exit For
             Next i
+            'MsgBox i
         End If
-        VarAdd vImgs, Img, j
+        VarAdd vImgs, Img, i
+        cWidth = cWidth + Img.Width + 2 * HorizontalMargin
     Next cImg
     
     'Create rows
@@ -124,7 +143,7 @@ Public Function GridImages(ByRef Imgs As Variant, ByVal Height As Double, ByVal 
     
     'Fill rows
     For cImg = vL(vImgs) To vU(vImgs)
-        Set Img = Imgs(cImg)
+        Set Img = vImgs(cImg)
         cLowRow = 0
         For cRow = 1 To cRows - 1
             If (vRowsWidth(cRow) < vRowsWidth(cLowRow)) Then cLowRow = cRow
@@ -135,28 +154,32 @@ Public Function GridImages(ByRef Imgs As Variant, ByVal Height As Double, ByVal 
 
     'Arrange images in rows
     For cRow = vL(vRows) To vU(vRows)
-        RowImages vRows(cRow), cHeight, Width, Top + cRow * cHeight, Left, Margin
+        RowImages vRows(cRow), cHeight - 2 * VerticalMargin, Width - 2 * HorizontalMargin, Top + cRow * cHeight + VerticalMargin, Left + HorizontalMargin, VerticalMargin / 2, HorizontalMargin / 2
     Next cRow
     
-    GridImages = Imgs
+    GridImages = imgs
 End Function
 
 
-Public Function RowImages(ByRef Imgs As Variant, ByVal Height As Double, ByVal Width As Double, Optional Top As Double = 0, Optional Left As Double = 0, Optional ByVal Margin As Double = 2)
+Public Function RowImages(ByRef imgs As Variant, ByVal Height As Double, ByVal Width As Double, Optional Top As Double = 0, Optional Left As Double = 0, Optional ByVal VerticalMargin As Double = 2, Optional ByVal HorizontalMargin As Double = 2)
     Dim Img As Object
     
+    Dim vImgs As Variant
     Dim cWidth As Double, cLeft As Double
     Dim dRatio As Double
-    Dim cImg As Long
+    Dim cImg As Long, bOdd As Integer
 
-    If Not VarsNotEmpty(Imgs) Then Exit Function
+    If Not VarsNotEmpty(imgs) Then Exit Function
     
     'Count width
     cWidth = 0
-    For cImg = vL(Imgs) To vU(Imgs)
-        Set Img = Imgs(cImg)
-        Img.Height = Height
-        cWidth = cWidth + Img.Width
+    bOdd = -1
+    For cImg = vL(imgs) To vU(imgs)
+        Set Img = imgs(cImg)
+        Img.Height = Height - 2 * VerticalMargin
+        cWidth = cWidth + Img.Width + 2 * HorizontalMargin
+        VarAdd vImgs, Img, bOdd
+        If bOdd = 0 Then bOdd = -1 Else bOdd = 0
     Next cImg
     
     'Resize ratio
@@ -166,16 +189,16 @@ Public Function RowImages(ByRef Imgs As Variant, ByVal Height As Double, ByVal W
     cLeft = Left
     If (dRatio > 1) Then cLeft = cLeft + (Width - cWidth) / 2
     
-    For cImg = vL(Imgs) To vU(Imgs)
-        Set Img = Imgs(cImg)
-        Img.Width = Img.Width * dRatio - 2 * Margin
-        If (Img.Height > Height - 2 * Margin) Then Img.Height = Height - 2 * Margin
+    For cImg = vL(imgs) To vU(imgs)
+        Set Img = vImgs(cImg)
+        Img.Width = Img.Width * dRatio
+        If (Img.Height > Height - 2 * VerticalMargin) Then Img.Height = Height - 2 * VerticalMargin
         Img.Top = Top + (Height - Img.Height) / 2
-        Img.Left = cLeft + Margin
-        cLeft = Img.Left + Img.Width + Margin
+        Img.Left = cLeft + HorizontalMargin
+        cLeft = Img.Left + Img.Width + HorizontalMargin
     Next cImg
     
-    RowImages = Imgs
+    RowImages = imgs
 End Function
 
 

@@ -7,7 +7,7 @@ Attribute VB_Name = "HedonMail"
 
 
 Public Function SendMail(ByVal QuickSend As Boolean, ByVal toMail As String, ByVal Subject As String, ByVal Body As String, Optional ByVal From As String, Optional ByVal Copy As String, Optional ByVal Attach As String, Optional ByVal Log As Boolean = True, Optional ByVal Percent As Double = 100, Optional Msg As String) As Boolean
-    'Odesï¿½lï¿½ email pomocï¿½ outlooku
+    'Odesílá email pomocí outlooku
     Dim OutApp As Object, OutMail As Object, vStr As String
     
     SendMail = False
@@ -35,15 +35,15 @@ Public Function SendMail(ByVal QuickSend As Boolean, ByVal toMail As String, ByV
     End If
 Out:
     If Log Then
-        If SendMail Then Call MsgLog(Percent, SConcatenate(Msg, toMail, ": ") & " odeslï¿½n", True, "Normal") Else Call MsgLog(Percent, SConcatenate(Msg, toMail, ": ") & " se nepodaï¿½ilo odeslat!", True, "Major")
+        If SendMail Then Call MsgLog(Percent, SConcatenate(Msg, toMail, ": ") & " odeslán", True, "Normal") Else Call MsgLog(Percent, SConcatenate(Msg, toMail, ": ") & " se nepodaøilo odeslat!", True, "Major")
     End If
     Set OutMail = Nothing
     Set OutApp = Nothing
 End Function
 
 Public Function SendMailTbl(ByVal QuickSend As Boolean, ByVal Table As cTable, Optional ByVal Tag As String, Optional ByVal Log As Boolean = True, Optional ByVal Percent As Double = 100, Optional ByVal Msg As String) As cTable
-    'Odesï¿½lï¿½ tabulku s emaily, vracï¿½ emaily, kterï¿½ se nepodaï¿½ilo obeslat
-    'Hledanï¿½ popisky sloupcï¿½: "From", "To", "Copy", "Subject", "Attach", "Body"
+    'Odesílá tabulku s emaily, vrací emaily, které se nepodaøilo obeslat
+    'Hledané popisky sloupcù: "From", "To", "Copy", "Subject", "Attach", "Body"
     
     Dim mFrom As Long, mTo As Long, mCopy As Long, mSubject As Long, mAttach As Long, mBody As Long
     Dim Row As Long, count As Long, cMsg As String, Per As Double
@@ -65,7 +65,7 @@ Public Function SendMailTbl(ByVal QuickSend As Boolean, ByVal Table As cTable, O
         Row = 0
         Per = GetOnePer(0, .CountRow, Percent)
         If vU(.Body) > 0 Then count = 1
-        Call MsgLog(Per, "Odesï¿½lï¿½m " & Inflect("mail", .CountRow, 1))
+        Call MsgLog(Per, "Odesílám " & Inflect("mail", .CountRow, 1))
         Do While TablesNotEmpty(.Body, Row)
             If count > 0 Then
                 cMsg = count
@@ -73,12 +73,12 @@ Public Function SendMailTbl(ByVal QuickSend As Boolean, ByVal Table As cTable, O
             End If
             If SendMail(QuickSend, .Cell(Row, mTo), .Cell(Row, mSubject), .Cell(Row, mBody), .Cell(Row, mFrom), .Cell(Row, mCopy), .Cell(Row, mAttach), True, Per, SConcatenate(Msg, cMsg, ".")) Then Call .DelRow(Row) Else Row = Row + 1
         Loop
-        Call fOutTbl.Eke(.FullContent, "Neobeslanï¿½ emaily", mBody)
+        Call fOutTbl.Eke(.FullContent, "Neobeslané emaily", mBody)
     End With
     
     Exit Function
     
 Out:
-    Call MsgLog(Percent, Msg & "Nenalezeny ï¿½ï¿½dnï¿½ emaily k obeslï¿½nï¿½", True, "Critical", "Emaily nenalezeny!", vbCritical)
+    Call MsgLog(Percent, Msg & "Nenalezeny žádné emaily k odeslání", True, "Critical", "Emaily nenalezeny!", vbCritical)
     
 End Function

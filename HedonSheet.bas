@@ -4,6 +4,16 @@ Attribute VB_Name = "HedonSheet"
     'Hedon.bas
 
 
+Public Function TagSheet(ByRef Target As Range) As String
+    TagSheet = Target.Worksheet.Name
+End Function
+Public Function TagRange(ByRef Target As Range, Optional ByVal Full As Boolean = False) As String
+    If Full Then TagRange = "'" & Target.Worksheet.Name & "'!" & Target.Address Else TagRange = Target.Address
+End Function
+
+Public Function ByTag(ByRef Target As Range) As Range
+    Set ByTag = Range(Target.Cells(1, 1).Value)
+End Function
 
 'Save sheet as new file
 Public Sub SaveSheet(ByRef Sheet As Worksheet, ByVal Path As String)
@@ -169,7 +179,7 @@ Public Function RangeToTable(ByVal Range As Range, Optional ByVal WantRow As Var
 End Function
 
 Public Function ZPocet(Vyber As Range) As Long
-    'Vracï¿½ poï¿½et nestejnï¿½ch plooï¿½ek z databï¿½ze
+    'Vrací po?et nestejných položek z databáze
     
     Dim NewVal As Boolean
     Dim Table As Variant

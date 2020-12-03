@@ -101,7 +101,7 @@ Private Sub AppTasklist(hwnd As Long)
 End Sub
 
 Public Sub CopyListbox(ByRef ListBox As Object, Optional ByVal RowDelimiter As String, Optional ByVal ColDelimiter As String)
-    'Kopï¿½ruje vybranï¿½ prvky seznamu Listbox do Clipboardu
+    'Kopíruje vybrané prvky seznamu Listbox do Clipboardu
     Dim MyData As New DataObject
     Set MyData = New DataObject
     
@@ -113,7 +113,7 @@ Public Sub CopyListbox(ByRef ListBox As Object, Optional ByVal RowDelimiter As S
 End Sub
 
 Public Sub PasteListbox(ByRef ListBox As Object, Optional ByVal RowDelimiter As String, Optional ByVal ColDelimiter As String, Optional ByVal ColEmbed As Boolean = False, Optional ByVal ColSensitivity As Integer)
-    'Vklï¿½dï¿½ Clipboardu do Listboxu
+    'Vkládá Clipboardu do Listboxu
     Dim MyData As New DataObject
     Set MyData = New DataObject
     
@@ -124,7 +124,7 @@ Public Sub PasteListbox(ByRef ListBox As Object, Optional ByVal RowDelimiter As 
 End Sub
 
 Public Sub DelListbox(ByRef ListBox As Object, Optional ByVal DelAll = False)
-    'Maï¿½e vybranï¿½ nebo vï¿½echny prvky seznamu Listbox
+    'Maže vybrané nebo všechny prvky seznamu Listbox
     Dim varRow As Variant, varCol As Variant, Del As Boolean
     Dim i As Integer, c As Integer
     
@@ -151,7 +151,7 @@ Public Sub SelectListBox(ByRef ListBox As Object, Optional ByVal Typ As String =
 End Sub
 
 Public Sub SetContMenu(ByRef ContMenu As Object, ByRef Parent As Object, ByVal RowColTab As Variant, ByVal X As Single, ByVal y As Single, ByVal Visible As Boolean)
-    'Nastavuje kontextovï¿½ Menu po kliknutï¿½ myï¿½i
+    'Nastavuje kontextové Menu po kliknutí myší
     Dim ColTab(0 To 0) As Variant, Row As Long
     
     With ContMenu
@@ -168,18 +168,18 @@ Public Sub SetContMenu(ByRef ContMenu As Object, ByRef Parent As Object, ByVal R
 End Sub
 
 Public Sub ChangePage(ByRef MultiPage As Object, ByVal Page As String)
-    'Pï¿½elistuje Multipage na stranu s nï¿½zvem Page
+    'Pøelistuje Multipage na stranu s názvem Page
     MultiPage.Value = CLng(MultiPage.Pages(CStr(Page)).index)
 End Sub
 
 Public Sub SWForm(ByRef Switch As Object, ByVal State As Boolean, Optional ByVal Default As Boolean = False)
-    'Aktivuje nebo deaktivuje zaï¿½krtï¿½vacï¿½ checkbox
+    'Aktivuje nebo deaktivuje zaškrtávací checkbox
     Switch.Enabled = State
     If Not State Then Switch.Value = Default
 End Sub
 
 Public Sub SetListBox(ListBox As Object, RowColTab As Variant, Optional AutoSize As Boolean = False)
-    'Vpisuje hodnoty seï¿½azenï¿½ v maticovï¿½m seznamu "RowColTab" do ListBoxu. Volba autosize mï¿½nï¿½ celkovou velikost listboxu na mï¿½ru vï¿½ech hodnot
+    'Vpisuje hodnoty seøazené v maticovém seznamu "RowColTab" do ListBoxu. Volba autosize mìní celkovou velikost listboxu na míru všech hodnot
     Dim WCol As String, WholeWidth As Double, RowTab As Variant, ColTab, Row As Long, Col As Long, i As Long
     Dim bfr As Worksheet, Testr As String
     Static ListBoxBufferTab As Variant
@@ -224,13 +224,13 @@ Public Sub SetListBox(ListBox As Object, RowColTab As Variant, Optional AutoSize
             With bfr.Cells
                 With .Font
                     If ListBox.Font.Bold And ListBox.Font.Italic Then
-                        .FontStyle = "Tuï¿½nï¿½ kurzï¿½va"
+                        .FontStyle = "Tuènì kurzíva"
                     ElseIf ListBox.Font.Bold Then
-                        .FontStyle = "Tuï¿½nï¿½"
+                        .FontStyle = "Tuènì"
                     ElseIf ListBox.Font.Italic Then
-                        .FontStyle = "Kurzï¿½va"
+                        .FontStyle = "Kurzíva"
                     Else
-                        .FontStyle = "Obyï¿½ejnï¿½"
+                        .FontStyle = "Obyèejnì"
                     End If
                     .Name = ListBox.Font.Name
                     .Size = ListBox.Font.Size

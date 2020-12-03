@@ -8,6 +8,10 @@ Public Function IsDir(ByVal Path As String)
     IsDir = Len(Dir(Path, vbDirectory)) > 0
 End Function
 
+Public Function ThisPath() As String
+    ThisPath = ThisWorkbook.Path
+End Function
+
 Public Function CreateDir(ByVal Path As String, Optional ByVal Recurse = False)
     Dim Fragment As Variant
     Dim Parent As String

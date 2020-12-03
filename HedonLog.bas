@@ -6,7 +6,7 @@ Attribute VB_Name = "HedonLog"
     'HedonFile.bas
 
 
-'Logovï¿½nï¿½
+'Logování
 '-------------------------------------------------------
 Public Sub Log(ByVal Msg As String, Optional ByVal NewRow As Boolean = True, Optional ByVal Priority As String = "Minor")
     'Priority jsou: Minor, Normal, Major, Critical, Debug
@@ -24,7 +24,7 @@ End Sub
 Public Function MsgLog(Optional ByVal Percent As Double = Empty, Optional ByVal Msg As String, Optional ByVal NewRow As Boolean = True, Optional ByVal Priority As String = "Minor", Optional ByVal Title As String, Optional ByVal Typ As Long, Optional Default As Variant = Empty, Optional PasswordChar As String) As String
     Dim BofLogBar As Boolean, Form As Object, Rtrtn As String
     Static MsgText As Variant
-    If IsBlank(MsgText) Then MsgText = StrToList("Null;OK;Storno;Zpï¿½t;Znovu;Ignorovat;Ano;Ne", ";")
+    If IsBlank(MsgText) Then MsgText = StrToList("Null;OK;Storno;Zpìt;Znovu;Ignorovat;Ano;Ne", ";")
     
     If Priority = "Major" Then Call Tis.User.AddStat("Zvajda")
     If Priority = "Critical" Then Call Tis.User.AddStat("Zvajda", 10)
